@@ -80,7 +80,7 @@ function aktualizujStatistiky() {
     document.getElementById("stat-dnes").textContent = celkemHostuDnes + " os.";
 }
 
-// Přepne stůl do úklidu na 1 minutu (60 sekund)
+// Přepne stůl do úklidu na 1 minutu (60 sekund) – volá se až po zaplacení
 function zahajUklid(stul) {
     stul.stav = "uklid";
     stul.hoste = 0;
@@ -117,7 +117,7 @@ function vykresliStoly() {
 
         karta.innerHTML = obsah;
 
-        // Tlačítka pro obsazený stůl
+        // Obsazený stůl má jen tlačítko "Zaplatit" – úklid začne až po zaplacení
         if (stul.stav === "obsazeno") {
             const btnZaplatit = document.createElement("button");
             btnZaplatit.textContent = "Zaplatit";
@@ -129,13 +129,7 @@ function vykresliStoly() {
                 zkontrolujKalkulacku();
             });
 
-            const btnUklid = document.createElement("button");
-            btnUklid.textContent = "Zahájit úklid";
-            btnUklid.className = "btn oranzove";
-            btnUklid.addEventListener("click", () => zahajUklid(stul));
-
             karta.appendChild(btnZaplatit);
-            karta.appendChild(btnUklid);
         }
 
         // Tlačítko pro stůl v úklidu
@@ -235,13 +229,13 @@ function naplnVyberStolu() {
         if (stul.stav === "obsazeno") {
             const moznost = document.createElement("option");
             moznost.value = stul.id;
-            moznost.textContent = `Stůl ${stul.id} (${stul.hoste} os.)`;
+            moznost.textContent = `Stůl ${stul.id} (${stul.hoste} os., max ${stul.kapacita})`;
             vyberStolu.appendChild(moznost);
         }
     }
 }
 
-// Když vyberu stůl, automaticky doplní počet osob
+// Když vyberu stůl, automaticky doplní počet usazených osob
 vyberStolu.addEventListener("change", () => {
     const id = Number(vyberStolu.value);
     for (let stul of stoly) {
@@ -256,20 +250,31 @@ vyberStolu.addEventListener("change", () => {
 function zkontrolujKalkulacku() {
     let jeToSpravne = true;
 
+    // 1. Kontrola částky – musí být alespoň 5 Kč
     const castka = Number(vstupCastka.value);
-    if (vstupCastka.value === "" || castka <= 0) {
+    if (vstupCastka.value === "" || isNaN(castka) || castka < 5) {
         vstupCastka.classList.add("spatne");
-        chybaCastka.textContent = "Částka musí být větší než 0 Kč.";
+        chybaCastka.textContent = "Částka musí být minimálně 5 Kč.";
         jeToSpravne = false;
     } else {
         vstupCastka.classList.remove("spatne");
         chybaCastka.textContent = "";
     }
 
+    // 2. Zjistí maximální povolený počet osob podle vybraného stolu (bez stolu max 6)
+    let maxOsob = 6;
+    const vybraneId = Number(vyberStolu.value);
+    for (let stul of stoly) {
+        if (stul.id === vybraneId) {
+            maxOsob = stul.kapacita;
+        }
+    }
+
+    // 3. Kontrola počtu osob (1 až kapacita stolu)
     const lide = Number(vstupLide.value);
-    if (vstupLide.value === "" || !Number.isInteger(lide) || lide < 1) {
+    if (vstupLide.value === "" || !Number.isInteger(lide) || lide < 1 || lide > maxOsob) {
         vstupLide.classList.add("spatne");
-        chybaLide.textContent = "Počet osob musí být celé číslo (alespoň 1).";
+        chybaLide.textContent = `Počet osob musí být celé číslo od 1 do ${maxOsob}.`;
         jeToSpravne = false;
     } else {
         vstupLide.classList.remove("spatne");
