@@ -1,0 +1,199 @@
+/* === 1. ZÁKLAD === */
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* === 2. HORNÍ LIŠTA === */
+.hlavicka {
+    background-color: #1e293b;
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hlavicka h1 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.menu-btn {
+    background-color: #334155;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.menu-btn.aktivni {
+    background-color: #2563eb;
+}
+
+/* === 3. OBSAH A PŘEPÍNÁNÍ OBRAZOVEK === */
+.obsah {
+    max-width: 960px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.obrazovka {
+    display: none; /* Všechny obrazovky jsou schované */
+}
+
+.obrazovka.aktivni {
+    display: block; /* Ukáže se jen ta aktivní */
+}
+
+/* === 4. STATISTIKY === */
+.statistiky {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-karta {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #2563eb;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.stat-karta span {
+    display: block;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.stat-karta strong {
+    font-size: 1.35rem;
+}
+
+.zelena   { border-left-color: #16a34a; }
+.cervena  { border-left-color: #dc2626; }
+.oranzova { border-left-color: #d97706; }
+.modra    { border-left-color: #2563eb; }
+.fialova  { border-left-color: #7c3aed; }
+
+/* === 5. KARTY A STOLY === */
+.karta {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.kalkulacka {
+    max-width: 480px;
+}
+
+.mrizka {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.stul {
+    padding: 18px;
+    border-radius: 10px;
+    border: 3px solid #cbd5e1;
+    background-color: white;
+}
+
+.stul h3 {
+    margin-top: 0;
+}
+
+/* Barvy podle stavu stolu */
+.stul.volno    { border-color: #16a34a; background-color: #f0fdf4; }
+.stul.obsazeno { border-color: #dc2626; background-color: #fef2f2; }
+.stul.uklid    { border-color: #d97706; background-color: #fffbeb; }
+
+/* === 6. FORMULÁŘE A TLAČÍTKA === */
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+input.spatne {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+}
+
+.radek {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modre    { background-color: #2563eb; }
+.oranzove { background-color: #d97706; }
+.zelene   { background-color: #16a34a; }
+
+.btn:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Texty a výsledky */
+.chyba { color: #dc2626; font-weight: bold; font-size: 0.9rem; margin: 5px 0 0; }
+.info  { color: #2563eb; font-weight: bold; margin: 10px 0 0; }
+
+.vysledek {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #eff6ff;
+    border-left: 5px solid #2563eb;
+    border-radius: 6px;
+}
+
+.cena-osoba {
+    font-size: 1.25rem;
+    color: #2563eb;
+}
+
+.skryte {
+    display: none;
+}
+
+/* === 7. MOBILNÍ ZOBRAZENÍ === */
+@media (max-width: 600px) {
+    .radek {
+        flex-direction: column;
+    }
+}

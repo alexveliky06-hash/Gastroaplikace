@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Restaurační systém pro správu stolů a výpočet účtu.">
+    <meta name="author" content="Alexandr Muck">
+    <title>GastroSystém</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <!-- HORNÍ LIŠTA S MENU -->
+    <header class="hlavicka">
+        <h1>🍽️ GastroSystém</h1>
+        <nav>
+            <button type="button" id="btn-mapa" class="menu-btn aktivni">Mapa stolů</button>
+            <button type="button" id="btn-kalkulacka" class="menu-btn">Platba a dýško</button>
+        </nav>
+    </header>
+
+    <main class="obsah">
+
+        <!-- ==========================================
+             OBRAZOVKA 1: MAPA STOLŮ A STATISTIKY
+        =========================================== -->
+        <section id="obrazovka-mapa" class="obrazovka aktivni">
+            <h2>Mapa a správa stolů</h2>
+
+            <!-- 5 kartiček se statistikami -->
+            <div class="statistiky">
+                <div class="stat-karta zelena">
+                    <span>Volné stoly</span>
+                    <strong id="stat-volne">0 / 6</strong>
+                </div>
+                <div class="stat-karta cervena">
+                    <span>Obsazené stoly</span>
+                    <strong id="stat-obsazene">0 / 6</strong>
+                </div>
+                <div class="stat-karta oranzova">
+                    <span>Probíhá úklid</span>
+                    <strong id="stat-uklid">0 / 6</strong>
+                </div>
+                <div class="stat-karta modra">
+                    <span>Právě v restauraci</span>
+                    <strong id="stat-hoste">0 / 24</strong>
+                </div>
+                <div class="stat-karta fialova">
+                    <span>Celkem hostů dnes</span>
+                    <strong id="stat-dnes">0 os.</strong>
+                </div>
+            </div>
+
+            <!-- Formulář na usazení hostů -->
+            <div class="karta">
+                <h3>Usadit nové hosty</h3>
+                <form id="form-usazeni" novalidate>
+                    <label for="vstup-hoste">Počet osob (1 až 6):</label>
+                    <div class="radek">
+                        <input type="number" id="vstup-hoste" value="2">
+                        <button type="submit" id="tlacitko-usadit" class="btn modre">Přidělit stůl</button>
+                    </div>
+                    <p id="chyba-usazeni" class="chyba"></p>
+                    <p id="zprava-usazeni" class="info"></p>
+                </form>
+            </div>
+
+            <!-- Sem JavaScript automaticky vykreslí 6 stolů -->
+            <div id="seznam-stolu" class="mrizka"></div>
+        </section>
+
+        <!-- ==========================================
+             OBRAZOVKA 2: BLBUVZDORNÁ KALKULAČKA
+        =========================================== -->
+        <section id="obrazovka-kalkulacka" class="obrazovka">
+            <h2>Blbuvzdorná kalkulačka platby</h2>
+
+            <div class="karta kalkulacka">
+                <form id="form-kalkulacka" novalidate>
+                    <label for="vyber-stolu">Vybrat stůl (volitelné):</label>
+                    <select id="vyber-stolu">
+                        <option value="">-- Bez výběru stolu --</option>
+                    </select>
+
+                    <label for="vstup-castka">Celková útrata (Kč):</label>
+                    <input type="number" id="vstup-castka" placeholder="Např. 1200">
+                    <p id="chyba-castka" class="chyba"></p>
+
+                    <label for="vyber-dysko">Spropitné (%):</label>
+                    <select id="vyber-dysko">
+                        <option value="0">0 % (Bez dýška)</option>
+                        <option value="10" selected>10 % (Standard)</option>
+                        <option value="15">15 %</option>
+                        <option value="20">20 %</option>
+                    </select>
+
+                    <label for="vstup-lide">Počet osob:</label>
+                    <input type="number" id="vstup-lide" value="2">
+                    <p id="chyba-lide" class="chyba"></p>
+
+                    <button type="submit" id="tlacitko-spocitat" class="btn modre" disabled>Spočítat útratu</button>
+                    <button type="button" id="tlacitko-uvolnit" class="btn oranzove" disabled>Zaplaceno – Uvolnit k úklidu</button>
+                </form>
+
+                <!-- Výsledek (na začátku je skrytý) -->
+                <div id="vysledek" class="vysledek skryte">
+                    <p>Spropitné celkem: <strong id="vys-dysko">0 Kč</strong></p>
+                    <p>Celkem k úhradě: <strong id="vys-celkem">0 Kč</strong></p>
+                    <p class="cena-osoba">Každý zaplatí: <strong id="vys-osoba">0 Kč</strong></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
