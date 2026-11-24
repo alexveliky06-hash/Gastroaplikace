@@ -1,5 +1,5 @@
 // =========================================================
-// 1. DATA APLIKACE (seznam 6 stolů a denní počítadlo hostů)
+// 1. DATA APLIKACE (seznam 6 stolů a denní statistiky)
 // =========================================================
 const stoly = [
     { id: 1, kapacita: 2, stav: "volno",    hoste: 0, casSezeni: 0,    casUklidu: 0  },
@@ -11,6 +11,7 @@ const stoly = [
 ];
 
 let celkemHostuDnes = 7; // Na začátku už v restauraci sedí 2 + 5 = 7 hostů
+let denniUtrata = 0;     // Celková zaplacená útrata za dnešek (v Kč)
 
 
 // =========================================================
@@ -56,7 +57,7 @@ function formatujCas(sekundy) {
     return minuty + " min " + zbytekSekund + " s";
 }
 
-// Spočítá a zobrazí 5 statistik nahoře na stránce
+// Spočítá a zobrazí 6 statistik nahoře na stránce
 function aktualizujStatistiky() {
     let volne = 0;
     let obsazene = 0;
@@ -78,6 +79,7 @@ function aktualizujStatistiky() {
     document.getElementById("stat-uklid").textContent = uklid + " / 6";
     document.getElementById("stat-hoste").textContent = praveHostu + " / " + celkemMist + " míst";
     document.getElementById("stat-dnes").textContent = celkemHostuDnes + " os.";
+    document.getElementById("stat-utrata").textContent = denniUtrata + " Kč";
 }
 
 // Přepne stůl do úklidu na 1 minutu (60 sekund) – volá se až po zaplacení
@@ -315,15 +317,22 @@ document.getElementById("form-kalkulacka").addEventListener("submit", (event) =>
     boxVysledek.classList.remove("skryte");
 });
 
-// Zaplacení a přepnutí vybraného stolu do úklidu
+// Zaplacení, přičtení do denní útraty a přepnutí stolu do úklidu
 tlacitkoUvolnit.addEventListener("click", () => {
+    if (!zkontrolujKalkulacku()) return;
+
     const id = Number(vyberStolu.value);
+    const castka = Number(vstupCastka.value);
+    const procenta = Number(vyberDysko.value);
+    const zaplaceno = Math.round(castka + castka * (procenta / 100));
+
     for (let stul of stoly) {
         if (stul.id === id) {
+            denniUtrata += zaplaceno; // Přičte zaplacenou částku (včetně dýška) do denní útraty
             zahajUklid(stul);
-            vstupCastka.value = "";
+            vstupCastka.value = "5";
             boxVysledek.classList.add("skryte");
-            zpravaUsazeni.textContent = "Stůl " + stul.id + " zaplatil a začal se uklízet.";
+            zpravaUsazeni.textContent = "Stůl " + stul.id + " zaplatil " + zaplaceno + " Kč a začal se uklízet.";
             prepniNa("mapa");
         }
     }

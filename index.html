@@ -29,7 +29,7 @@
         <section id="obrazovka-mapa" class="obrazovka aktivni">
             <h2>Mapa a správa stolů</h2>
 
-            <!-- 5 kartiček se statistikami -->
+            <!-- 6 kartiček se statistikami -->
             <div class="statistiky">
                 <div class="stat-karta zelena">
                     <span>Volné stoly</span>
@@ -50,6 +50,10 @@
                 <div class="stat-karta fialova">
                     <span>Celkem hostů dnes</span>
                     <strong id="stat-dnes">0 os.</strong>
+                </div>
+                <div class="stat-karta zelena">
+                    <span>Denní útrata hostů</span>
+                    <strong id="stat-utrata">0 Kč</strong>
                 </div>
             </div>
 
@@ -85,7 +89,7 @@
                     </select>
 
                     <label for="vstup-castka">Celková útrata (Kč):</label>
-                    <input type="number" id="vstup-castka" placeholder="Např. 1200">
+                    <input type="number" id="vstup-castka" value="5" min="5" placeholder="Minimálně 5 Kč">
                     <p id="chyba-castka" class="chyba"></p>
 
                     <label for="vyber-dysko">Spropitné (%):</label>
